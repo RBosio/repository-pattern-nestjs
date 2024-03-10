@@ -4,6 +4,7 @@ import {
   FindOneOptions,
   FindOptionsWhere,
   Repository,
+  UpdateResult,
 } from "typeorm"
 import { BaseRepositoryInterface } from "./base.repository.interface"
 
@@ -15,7 +16,7 @@ export abstract class BaseAbstractRepostitory<T extends HasId>
   implements BaseRepositoryInterface<T>
 {
   private entity: Repository<T>
-  
+
   protected constructor(entity: Repository<T>) {
     this.entity = entity
   }
@@ -24,15 +25,7 @@ export abstract class BaseAbstractRepostitory<T extends HasId>
     return await this.entity.save(data)
   }
 
-  public async saveMany(data: DeepPartial<T>[]): Promise<T[]> {
-    return this.entity.save(data)
-  }
-
   public create(data: DeepPartial<T>): T {
-    return this.entity.create(data)
-  }
-
-  public createMany(data: DeepPartial<T>[]): T[] {
     return this.entity.create(data)
   }
 
@@ -55,15 +48,7 @@ export abstract class BaseAbstractRepostitory<T extends HasId>
     return await this.entity.find(options)
   }
 
-  public async remove(data: T): Promise<T> {
-    return await this.entity.remove(data)
-  }
-
-  public async preload(entityLike: DeepPartial<T>): Promise<T> {
-    return await this.entity.preload(entityLike)
-  }
-
-  public async findOne(options: FindOneOptions<T>): Promise<T> {
-    return this.entity.findOne(options)
+  public async softDelete(id: number): Promise<UpdateResult> {
+    return await this.entity.softDelete(id)
   }
 }
