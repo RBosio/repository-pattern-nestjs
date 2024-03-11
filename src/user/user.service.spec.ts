@@ -1,30 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing"
 import { UserService } from "./user.service"
 import { UserRepository } from "src/repositories/user.repository"
-import { User } from "src/entities/user.entity"
 import { BadRequestException, NotFoundException } from "@nestjs/common"
-import { CreateUserDto } from "./dto/create-user.dto"
-import { UpdateUserDto } from "./dto/update-user.dto"
-
-const mockUser: User = {
-  id: 1,
-  email: "fido@gmail.com",
-  password: "123",
-  firstname: "fido",
-  lastname: "d",
-  deleted_at: null,
-}
-
-const mockCreateUser: CreateUserDto = {
-  email: "fido@gmail.com",
-  password: "123",
-  firstname: "fido",
-  lastname: "d",
-}
-
-const mockUpdateUser: UpdateUserDto = {
-  password: "456",
-}
+import { mockUser } from "src/__mocks__/user/user.mock"
+import { mockCreateUser } from "src/__mocks__/user/create-user.mock"
+import { mockUpdateUser } from "src/__mocks__/user/update-user.mock"
 
 const mockUserRepository = {
   findAll: jest.fn(),
@@ -51,6 +31,11 @@ describe("UserService", () => {
 
     userService = module.get<UserService>(UserService)
     userRepository = module.get<UserRepository>(UserRepository)
+  })
+
+  it("should be defined", () => {
+    expect(userService).toBeDefined()
+    expect(userRepository).toBeDefined()
   })
 
   describe("findAll", () => {
