@@ -47,8 +47,8 @@ export class UserService {
   }
 
   async delete(id: number): Promise<User> {
-    const user = await this.findOneById(1)
-    const result = await this.userRepository.softDelete(id)
+    const user = await this.findOneById(id)
+    await this.userRepository.softDelete(id)
 
     return user
   }
